@@ -11,8 +11,12 @@ namespace ECommerce.Infra.Contract
 {
     public  interface IUser
     {
+        
+
         Task<User> AddUser(User user);
       
-        Task<User> UserLogin(int id);
+        
+        Task<User> UserLogin(string email);
+        
     }
 }

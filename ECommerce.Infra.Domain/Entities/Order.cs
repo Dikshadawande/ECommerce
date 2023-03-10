@@ -15,13 +15,12 @@ namespace ECommerceContextt.Infra.Domain.Entities
         public int OrderId { get; set; }
         public Guid Invoice_Num { get; set; } = Guid.NewGuid();  //own filling value
    
-        /// </summary>
+        
         public long? TotalAmount { get; set; }
         public int UserId { get; set; }
 
-        public int ProductId { get; set; }
-
-        [ForeignKey("ProductId")]
+        [ForeignKey("UserId")]
+        
         [JsonIgnore]
         public User Users { get; set; }
         [JsonIgnore]

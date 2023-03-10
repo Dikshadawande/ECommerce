@@ -21,14 +21,9 @@ namespace ECommerce.Core.Services
 
         public async Task<Order> AddOrder(OrderRequestModel orderRequestModel)
         {
-            Order o1 = new Order();
-            //o1.OrderId = orderRequestModel.OrderId;
-            //o1.Invoice_Num = orderRequestModel.Invoice_Num;
-            o1.TotalAmount = orderRequestModel.TotalAmount;
-            o1.UserId = orderRequestModel.UserId;
-            o1.ProductId = orderRequestModel.ProductId;
+        
 
-            return (await _order.Add(o1));
+            return (await _order.Add(orderRequestModel));
 
         }
 

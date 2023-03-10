@@ -22,11 +22,15 @@ namespace ECommerce.Infra.Repository
 
         }
 
-        public async Task<User> UserLogin(int id)
+        public async Task<User> UserLogin(string Email)
         {
-            var user = _eCommerceContext.Users.FirstOrDefault(x => x.Id == id);
-            await _eCommerceContext.SaveChangesAsync();
+            var user = _eCommerceContext.Users.FirstOrDefault(x => x.Email == Email);
+            //await _eCommerceContext.SaveChangesAsync();
             return user;
         }
+
+        
     }
+
+    
 }

@@ -13,6 +13,8 @@ namespace ECommerce.Core.Contract
       
         Task<Product> AddProduct(Product product);
         Task<Product> GetProduct(int id);
+
+        Task <IList<Product>> GetAllProducts();
        
     }
 }

@@ -3,6 +3,7 @@ using ECommerceContextt.Infra.Domain;
 using ECommerceContextt.Infra.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,6 +37,13 @@ namespace ECommerce.Infra.Repository
             await _eCommerceContext.SaveChangesAsync();
             return product;
         }
-        
+
+
+        public async Task<IList<Product>> Get()
+        {
+            var Product =  _eCommerceContext.Products.ToList();
+         
+            return Product;
+        }
     }
 }

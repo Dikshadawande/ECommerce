@@ -11,5 +11,6 @@ namespace ECommerce.Infra.Contract
     {
         Task<Product> Add(Product product);
         Task<Product> Get(int id);
+        Task<IList<Product>> Get();
     }
 }

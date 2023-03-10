@@ -26,5 +26,11 @@ namespace ECommerce.Core.Services
 
 
         }
+
+        public async Task<ProductCategories> GetProduct(int id)
+        {
+            var Catogory = await _proCategoriesService.Get(id);
+            return Catogory;
+        }
     }
 }

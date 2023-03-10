@@ -1,6 +1,7 @@
 ﻿using ECommerce.Infra.Contract;
 using ECommerceContextt.Infra.Domain;
 using ECommerceContextt.Infra.Domain.Entities;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,11 @@ namespace ECommerce.Infra.Repository
             return category;
         }
 
-      
-      
+        public async Task<ProductCategories> Get(int id)
+        {
+            var catogory = _eCommerceContext.ProductCategories.FirstOrDefault(x => x.Id == id);
+            await _eCommerceContext.SaveChangesAsync();
+            return catogory;
+        }
     }
 }

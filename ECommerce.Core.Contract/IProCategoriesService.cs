@@ -10,5 +10,7 @@ namespace ECommerce.Core.Contract
     public interface IProCategoriesService
     {
         Task<ProductCategories>AddPro(ProductCategories category);
+        Task<ProductCategories>GetProduct(int id);  
+        
     }
 }

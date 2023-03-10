@@ -12,10 +12,11 @@ namespace ECommerceContextt.Infra.Domain.Entities
     {
         [Key]
         public int Id { get; set; }
+        public string Name { get; set; }
         public string Url { get; set; }
         public int ProductId { get; set; }
 
-      //  [ForeignKey("ProductId")]
-    //    public Product Products { get; set; }
+        [ForeignKey("ProductId")]
+        public Product Products { get; set; }
     }
 }

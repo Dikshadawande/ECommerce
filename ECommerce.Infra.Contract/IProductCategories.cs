@@ -10,5 +10,7 @@ namespace ECommerce.Infra.Contract
     public interface IProductCategories
     {
         Task<ProductCategories> Add(ProductCategories category);
+        Task<ProductCategories> Get(int id);
+       
     }
 }

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+
 using System.Text.Json.Serialization;
 
 namespace ECommerceContextt.Infra.Domain.Entities
@@ -22,6 +22,11 @@ namespace ECommerceContextt.Infra.Domain.Entities
         [ForeignKey(nameof(CategoryId))]
         [JsonIgnore]
         public ProductCategories? productCategories { get; set; }
+        [JsonIgnore]
+        public Order? order { get; set; }
+
+        [JsonIgnore]
+        public Images? Image { get; set; } 
        
 
 

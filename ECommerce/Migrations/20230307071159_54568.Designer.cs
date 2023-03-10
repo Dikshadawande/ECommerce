@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ECommerceContext))]
-    [Migration("20230302073114_96")]
-    partial class _96
+    [Migration("20230307071159_54568")]
+    partial class _54568
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,10 @@ namespace ECommerce.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -41,6 +45,9 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
 
                     b.ToTable("Imagess");
                 });
@@ -56,9 +63,6 @@ namespace ECommerce.Migrations
                     b.Property<Guid>("Invoice_Num")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<long?>("TotalAmount")
                         .HasColumnType("bigint");
 
@@ -67,7 +71,7 @@ namespace ECommerce.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -89,12 +93,17 @@ namespace ECommerce.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<long?>("Price")
                         .HasColumnType("bigint");
 
                     b.HasKey("ProductId");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Products");
                 });
@@ -127,15 +136,18 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<long?>("PhoneNumber")
@@ -150,11 +162,22 @@ namespace ECommerce.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ECommerceContextt.Infra.Domain.Entities.Images", b =>
+                {
+                    b.HasOne("ECommerceContextt.Infra.Domain.Entities.Product", "Products")
+                        .WithOne("Image")
+                        .HasForeignKey("ECommerceContextt.Infra.Domain.Entities.Images", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("ECommerceContextt.Infra.Domain.Entities.Order", b =>
                 {
                     b.HasOne("ECommerceContextt.Infra.Domain.Entities.User", "Users")
                         .WithMany("Orders")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -169,7 +192,23 @@ namespace ECommerce.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ECommerceContextt.Infra.Domain.Entities.Order", "order")
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId");
+
+                    b.Navigation("order");
+
                     b.Navigation("productCategories");
+                });
+
+            modelBuilder.Entity("ECommerceContextt.Infra.Domain.Entities.Order", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("ECommerceContextt.Infra.Domain.Entities.Product", b =>
+                {
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("ECommerceContextt.Infra.Domain.Entities.ProductCategories", b =>

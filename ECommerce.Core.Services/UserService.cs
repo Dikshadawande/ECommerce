@@ -1,7 +1,9 @@
-﻿using Azure.Core;
+﻿using AutoMapper;
+using Azure.Core;
 using ECommerce.Core.Contract;
 using ECommerce.Core.Domain.RequestModel;
 using ECommerce.Infra.Contract;
+using ECommerce.Infra.Domain.Entities;
 using ECommerceContextt.Infra.Domain;
 //using ECommerceContext.Infra.Domain;
 using ECommerceContextt.Infra.Domain.Entities;
@@ -18,13 +20,15 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Core.Services
 {
-    public  class UserService : IUserService
+    public class UserService : IUserService
     {
         private readonly IUser _user;
         private readonly IConfiguration _config;
+        private readonly IMapper mapper;
 
-        public UserService(IUser userservice,IConfiguration configuration)
+        public UserService(IUser userservice, IConfiguration configuration,IMapper mapper)
         {
+            this.mapper = mapper;
             _user = userservice;
             _config = configuration;
         }
@@ -32,14 +36,21 @@ namespace ECommerce.Core.Services
         public async Task<User> Add(UserRequestModel userRequestModel)
         {
 
-            CreateHash(userRequestModel.password, out byte[] passwordHash, out byte[] passwordSalt);
-            User u1=new User();
-            u1.Id=userRequestModel.Id;
-            u1.Name = userRequestModel.Name;
-            u1.Role=userRequestModel.Role;
-            u1.PasswordHash= passwordHash;
-            u1.PasswordSalt= passwordSalt;
-            
+            CreateHash(userRequestModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+
+           // User u1 = new User();
+            User u1 = mapper.Map<User>(userRequestModel); ;
+
+            //u1.Id = userRequestModel.Id;
+            //u1.Name = userRequestModel.Name;
+            //u1.Role = userRequestModel.Role;
+            //u1.Email = userRequestModel.Email;
+
+
+            u1.PasswordHash = passwordHash;
+            u1.PasswordSalt = passwordSalt;
+
             //_user.AddUser(u1);
 
             return (await _user.AddUser(u1));
@@ -48,15 +59,15 @@ namespace ECommerce.Core.Services
 
 
         //login
-        public async Task<string> Login(UserRequestModel request)
+        public async Task<string> Login(User1 user1)
         {
-            User u = await _user.UserLogin(request.Id);
+            User u = await _user.UserLogin(user1.Email);
 
-            if (u.Name != request.Name)
+            if (u.Email != user1.Email)
             {
                 return ("User Not Found");
             }
-            if (!VerifyPasswordHash(request.password, u.PasswordHash, u.PasswordSalt))
+            if (!VerifyPasswordHash(user1.Password, u.PasswordHash, u.PasswordSalt))
             {
                 return ("Wrong Password");
             }
@@ -102,7 +113,6 @@ namespace ECommerce.Core.Services
             }
         }
 
-       
     }
 
 

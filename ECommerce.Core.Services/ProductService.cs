@@ -4,6 +4,7 @@ using ECommerce.Infra.Contract;
 using ECommerceContextt.Infra.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Mapping;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,14 @@ namespace ECommerce.Core.Services
    
             return (await _product.Add(product));
         }
+
+        public async Task<IList<Product>> GetAllProducts()
+        {
+            var p = await _product.Get();
+            return p;
+        }
+
+
 
 
         //get
